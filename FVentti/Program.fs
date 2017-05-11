@@ -1,7 +1,11 @@
-﻿// Learn more about F# at http://fsharp.org
-// See the 'F# Tutorial' project for more help.
+﻿open System
 
-[<EntryPoint>]
-let main argv = 
-    printfn "%A" argv
-    0 // return an integer exit code
+let sign num = 
+    if num > 0 then "positive"
+    elif num < 0 then "negative"
+    else "zero"
+
+let main() = 
+    Console.WriteLine("sign: 5: {0}", (sign 5))
+
+main()
