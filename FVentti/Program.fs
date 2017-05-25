@@ -42,13 +42,17 @@ let Korttipakka = [ for maa in [Maa.Hertta; Maa.Pata; Maa.Ruutu; Maa.Risti] do
 
 // Sekoita korttipakka
 
+let sekoitaPakka pakka =
+    let random = new System.Random()
+    pakka |> List.sortBy (fun kortti -> random.Next())
 
 // Jaa kortti jakajalle ja pelaajalle eli aloita peli
 
 
 // Tulosta ja toimita
 let main() = 
-    for kortti in Korttipakka do 
+    let uusiPakka = sekoitaPakka(Korttipakka)
+    for kortti in uusiPakka do 
     printf "%O \n" kortti
     //Console.WriteLine(korttipakka);
 main()
