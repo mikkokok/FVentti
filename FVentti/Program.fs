@@ -20,6 +20,8 @@ type Numero = // Numero on discriminated union, union Numero + Maa
 | Kuningatar of Maa 
 | Kuningas of Maa
 
+type Pelaaja = {Nimi : String; Kasi : Numero list}
+
 // Luo korttipakka
 // Korttipakka on Kortti list
 let Korttipakka = [ for maa in [Maa.Hertta; Maa.Pata; Maa.Ruutu; Maa.Risti] do
@@ -48,11 +50,25 @@ let sekoitaPakka pakka =
 
 // Jaa kortti jakajalle ja pelaajalle eli aloita peli
 
+let jaaKortti pakka = 
+    match pakka with
+    | kortti::loppuPakka -> (Some kortti, loppuPakka)
+    | [] -> (None, [])
 
 // Tulosta ja toimita
 let main() = 
-    let uusiPakka = sekoitaPakka(Korttipakka)
-    for kortti in uusiPakka do 
+    let pakka = sekoitaPakka(Korttipakka)
+    
+    let jakaja = {Nimi = "Jakaja"; Kasi = List.empty}
+    let pelaaja = {Nimi = "Pelaaja"; Kasi = List.empty}
+
+    //jakaja.Kasi = List.append(jaaKortti(pakka))
+    //jakaja.Kasi = List.append(jaaKortti(pakka))
+    //pelaaja.Kasi = List.append(jaaKortti(pakka))
+    //pelaaja.Kasi = List.append(jaaKortti(pakka))
+
+    for kortti in pakka do 
     printf "%O \n" kortti
+
     //Console.WriteLine(korttipakka);
 main()
