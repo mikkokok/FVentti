@@ -5,7 +5,7 @@ let ventti = 21 // Maksimipistemäärä
 let jakajansuurinkasi = 17 // Kokeneet pelaajat eivät yleensä ota enempää kortteja, jos käden arvo on 17 tai suurempi.
 type Maa = | Hertta = 0 | Pata = 1 | Ruutu = 2 | Risti = 3
 
-type Numero = 
+type Numero = // Numero on discriminated union, union Numero + Maa
 | Assa of Maa  // ässä on 1 tai 14 (pelaaja valitsee kumpaa arvoa haluaa kulloinkin käyttää).
 | Kaksi of Maa  
 | Kolme of Maa 
@@ -37,7 +37,7 @@ let Korttipakka = [ for maa in [Maa.Hertta; Maa.Pata; Maa.Ruutu; Maa.Risti] do
                     yield Kuningatar(maa)
                     yield Kuningas(maa)
                    ]
-
+// Funktiot 
 
 
 // Sekoita korttipakka
