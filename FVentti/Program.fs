@@ -20,7 +20,10 @@ type Numero = // Numero on discriminated union, union Numero + Maa
 | Kuningatar of Maa 
 | Kuningas of Maa
 
-type Pelaaja = {Nimi : String; Kasi : Numero list}
+type Pelaaja = {
+                Nimi : String;
+                Kasi : Numero list
+                }
 
 // Luo korttipakka
 // Korttipakka on Kortti list
@@ -39,9 +42,25 @@ let Korttipakka = [ for maa in [Maa.Hertta; Maa.Pata; Maa.Ruutu; Maa.Risti] do
                     yield Kuningatar(maa)
                     yield Kuningas(maa)
                    ]
-// Funktiot 
+// Funktiot
 
+// Kerro pakka
+let kerroPakka =
+    printf "----------Korttipakan kortit---------------------------"
+    for kortti in Korttipakka do 
+    printf "%O \n" kortti
 
+// Kerro pelaajan käsi
+let kerroPelaaja pelaaja = 
+    printf "----------Pelaajan kortit---------------------------"
+    for kortti in pelaaja do
+    printf "%O" kortti
+
+// Kerro jakajan käsi
+let kerroJakaja jakaja =
+    printf "----------Jakajan kortit---------------------------"
+    for kortti in jakaja do
+    printf "%O" kortti
 // Sekoita korttipakka
 
 let sekoitaPakka pakka =
@@ -58,17 +77,23 @@ let jaaKortti pakka =
 // Tulosta ja toimita
 let main() = 
     let pakka = sekoitaPakka(Korttipakka)
-    
+
     let jakaja = {Nimi = "Jakaja"; Kasi = List.empty}
     let pelaaja = {Nimi = "Pelaaja"; Kasi = List.empty}
-
+    kerroPakka // Lukee pakan
+    
     //jakaja.Kasi = List.append(jaaKortti(pakka))
     //jakaja.Kasi = List.append(jaaKortti(pakka))
     //pelaaja.Kasi = List.append(jaaKortti(pakka))
     //pelaaja.Kasi = List.append(jaaKortti(pakka))
 
-    for kortti in pakka do 
-    printf "%O \n" kortti
+    
+    
+
+
+
+
+
 
     //Console.WriteLine(korttipakka);
 main()
