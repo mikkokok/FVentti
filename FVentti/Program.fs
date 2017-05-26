@@ -74,18 +74,22 @@ let jaaKortti pakka =
     | kortti::loppuPakka -> (Some kortti, loppuPakka)
     | [] -> (None, [])
 
+let annaKorttiPakasta pakka = 
+    Korttipakka.Head
+
 // Tulosta ja toimita
 let main() = 
     let pakka = sekoitaPakka(Korttipakka)
 
-    let jakaja = {Nimi = "Jakaja"; Kasi = List.empty}
-    let pelaaja = {Nimi = "Pelaaja"; Kasi = List.empty}
+    let mutable jakaja = {Nimi = "Jakaja";  Kasi = List.empty}
+    let mutable pelaaja = {Nimi = "Pelaaja"; Kasi = List.empty}
     kerroPakka // Lukee pakan
     
     //jakaja.Kasi = List.append(jaaKortti(pakka))
     //jakaja.Kasi = List.append(jaaKortti(pakka))
     //pelaaja.Kasi = List.append(jaaKortti(pakka))
     //pelaaja.Kasi = List.append(jaaKortti(pakka))
+
 
     
     
