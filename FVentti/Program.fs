@@ -103,7 +103,7 @@ let korttiKateen kortti kasi =
     ret
 
 // Funktio jolla kysytään pelaako pelaaja vielä
-let nostaakoKortin =
+let nostaakoKortin () =
     printf "Nostatko kortin? Vastaa k tai e"
     let ret = Console.ReadLine()
     if ret = "k" then true
@@ -119,7 +119,7 @@ let laskeKortit kasi =
 let main() = 
     let pakka = sekoitaPakka(Korttipakka)
 
-    let mutable jakaja = {Nimi = "Jakaja";  Kasi = []}
+    let mutable jakaja = {Nimi = "Jakaja";  Kasi = List.empty}
     let mutable pelaaja = {Nimi = "Pelaaja"; Kasi = List.empty}
     kerroPakka pakka // Lukee pakan
     // Testausta varten
@@ -131,10 +131,10 @@ let main() =
     let lista = [kortti.Value; korttia.Value; korttib.Value]
     printf "\n\n %A \n\n" lista.Length 
     let lista = List.append pelaaja.Kasi lista
-    let player = {pelaaja with Kasi = lista}
+    let pelaajankasi = {pelaaja with Kasi = lista}
     //pelaaja.Kasi = korttiKateen pelaaja.Kasi kortti.Value
     //let testi = kortti.Value :: pelaaja.Kasi
-    printf "\n\n %A \n\n" player.Kasi.Length 
+    printf "\n\n %A \n\n" pelaajankasi.Kasi.Length 
     let numero = haeKortinNumero kortti.Value
     printf "\n\n %A \n\n" numero
 
