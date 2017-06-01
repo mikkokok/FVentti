@@ -89,20 +89,19 @@ let sekoitaPakka pakka =
     let random = new System.Random()
     pakka |> List.sortBy (fun kortti -> random.Next())
 
-//type jaettuKortti = {Kortti:Kortti; Loppupakka:Kortti list}
 
 // Jaa kortti jakajalle ja pelaajalle eli aloita peli
 // Palauttaa tuplen (kortti option, pakka)
 // Jos pakka on tyhjä palauttaa optionin ja tyhjän pakan
-//let jaaKortti pakka = 
-    //match pakka with
-    //| kortti::loppupakka -> {Kortti=kortti; Loppupakka=loppupakka} |> Some
-    //| [] -> (None)    
+let jaaKortti pakka = 
+    match pakka with
+    | kortti::loppupakka -> (Some kortti, loppupakka)
+    | [] -> (None, [])    
 
 //Jakaa kortin ja palauttaa pakan ensimmäisen kortin
 // sekä lopun pakan erikseen
-let jaaKortti pakka = 
-    (List.head pakka, List.tail pakka)
+//let jaaKortti pakka = 
+    //(List.head pakka, List.tail pakka)
 
 // Aseta kortti käteen
 let korttiKateen kortti kasi =
@@ -123,6 +122,27 @@ let laskeKortit kasi =
     printf "Lasketaan korttien summa"
     for kortti in kasi do
     kortti
+
+let pelaaPelia pelaaja jakaja pakka = 
+    let mutable pelaakoPelaaja = nostaakoKortin()
+    let mutable pelaaja = pelaaja
+    let mutable jakaja = jakaja
+    let mutable loppupakka = pakka
+    
+    while pelaakoPelaaja do
+        let (nostettuKortti, pakka) = jaaKortti pakka
+        let kortti = [nostettuKortti.Value]
+        pelaaja <- {Nimi = "Pelaaja"; Kasi = List.append pelaaja.Kasi kortti}
+        kerroPelaaja pelaaja.Kasi
+        pelaakoPelaaja <- nostaakoKortin()
+
+    let mutable pelaakoJakaja = true
+
+    while pelaakoJakaja do
+        let (nostettuKortti, pakka) = jaaKortti pakka
+        let kortti = [nostettuKortti.Value]
+        jakaja <- {Nimi = "Jakaja"; Kasi = List.append jakaja.Kasi kortti}
+        kerroJakaja jakaja.Kasi
     
 
 // Tulosta ja toimita
@@ -131,32 +151,23 @@ let main() =
     //kerroPakka pakka // Lukee pakan
 
     //Vedetään pelaajan ja jakajan 2 ekaa korttia pakasta
-    let (pelaajanEkaKortti, loppuPakka1) = jaaKortti pakka
-    let (pelaajanTokaKortti, loppuPakka2) = jaaKortti loppuPakka1
-    let (jakajanEkaKortti, loppuPakka3) = jaaKortti loppuPakka2
-    let (jakajanTokaKortti, loppuPakka4) = jaaKortti loppuPakka3
+    let (pelaajanEkaKortti, pakka) = jaaKortti pakka
+    let (pelaajanTokaKortti, pakka) = jaaKortti pakka
+    let (jakajanEkaKortti, pakka) = jaaKortti pakka
+    let (jakajanTokaKortti, pakka) = jaaKortti pakka
 
     //Luodaan molemmille lista vedetyistä korteista
-    let pelaajanAloitusKortit = [pelaajanEkaKortti; pelaajanTokaKortti]
-    let jakajanAloitusKortit = [jakajanEkaKortti; jakajanTokaKortti]
+    let pelaajanAloitusKortit = [pelaajanEkaKortti.Value; pelaajanTokaKortti.Value]
+    let jakajanAloitusKortit = [jakajanEkaKortti.Value; jakajanTokaKortti.Value]
 
     //Luodaan pelaaja ja jakaja sekä asetetaan vedetyt kortit käteen
-    let mutable jakaja = {Nimi = "Jakaja";  Kasi = pelaajanAloitusKortit}
-    let mutable pelaaja = {Nimi = "Pelaaja"; Kasi = jakajanAloitusKortit}
+    let jakaja = {Nimi = "Jakaja";  Kasi = pelaajanAloitusKortit}
+    let pelaaja = {Nimi = "Pelaaja"; Kasi = jakajanAloitusKortit}
 
     kerroPelaaja pelaaja.Kasi
     kerroJakaja jakaja.Kasi
 
-    let mutable pelaakoPelaaja = nostaakoKortin()
-    let mutable loppuPakkafinal = loppuPakka4
-
-    while pelaakoPelaaja do
-        let (nostettuKortti, loppuPakkaP) = jaaKortti loppuPakkafinal
-        let lista = [nostettuKortti]
-        pelaaja <- {Nimi = "Pelaaja"; Kasi = List.append pelaaja.Kasi lista}
-        kerroPelaaja pelaaja.Kasi
-        loppuPakkafinal <- loppuPakkaP
-        pelaakoPelaaja <- nostaakoKortin()
+    pelaaPelia pelaaja jakaja pakka
 
     // Testausta varten
     //printf "\n\n %A \n\n" pelaajanAloitusKortit.Length 
@@ -165,10 +176,10 @@ let main() =
 
     //let pelaajankasi = {pelaaja with Kasi = lista}
     //pelaaja.Kasi = korttiKateen pelaaja.Kasi kortti
-    let testi = pelaajanEkaKortti :: pelaaja.Kasi
+    //let testi = pelaajanEkaKortti :: pelaaja.Kasi
     //printf "\n\n %A \n\n" pelaajankasi.Kasi.Length 
-    let numero = haeKortinNumero pelaajanEkaKortti
-    printf "\n\n %A \n\n" numero
+    //let numero = haeKortinNumero pelaajanEkaKortti.Value
+    //printf "\n\n %A \n\n" numero
 
 
     //printf "%A \n" kortti.Value
