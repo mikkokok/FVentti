@@ -142,7 +142,7 @@ let pelaaPelia pelaaja jakaja pakka =
     let mutable jakaja = jakaja
     let mutable pakka = pakka
     let mutable pelaakoJakaja = true
-    
+
     while pelaakoPelaaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
         pelaaja <- {Nimi = "Pelaaja"; Kasi = korttiKateen pelaaja.Kasi nostettuKortti.Value}
@@ -151,10 +151,12 @@ let pelaaPelia pelaaja jakaja pakka =
         let onkoHavio = tarkistaKierroksenHavio korttienSumma
         if onkoHavio then
             pelaakoPelaaja <-false
+            pelaakoJakaja <- false
         else
         let onkoVoitto = tarkistaKierroksenVoitto korttienSumma
         if onkoVoitto then
             pelaakoPelaaja <- false
+            pelaakoJakaja <- false
         else
             pakka <- loppuPakka
             pelaakoPelaaja <- nostaakoKortin() 
