@@ -59,11 +59,6 @@ let Korttipakka = [ for maa in [Maa.Hertta; Maa.Pata; Maa.Ruutu; Maa.Risti] do
                     yield Kuningatar(maa)
                     yield Kuningas(maa)
                    ]
-
-
-
-
-
 // Funktiot
 // %A discminited unioneille
 // Kerro pakka
@@ -111,6 +106,9 @@ let korttiKateen kortti kasi =
 let asetaKorttiKateen pelaaja kortti = 
     pelaaja.Kasi = List.append pelaaja.Kasi kortti
 
+let add x y =
+    x + y
+
 // Funktio jolla kysytään pelaako pelaaja vielä
 let nostaakoKortin () =
     printf "Nostatko kortin? Vastaa k tai e"
@@ -120,8 +118,11 @@ let nostaakoKortin () =
 // Funktio jolla lasketaan kädessä olevien korttien arvot
 let laskeKortit kasi = 
     printf "Lasketaan korttien summa"
+    let mutable ret = 0
     for kortti in kasi do
-    kortti
+    ret <- ret + haeKortinNumero kortti
+    done
+    ret
 
 let onkoVentti korttienSumma = 
     if korttienSumma = ventti then true
