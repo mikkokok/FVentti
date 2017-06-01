@@ -123,26 +123,32 @@ let laskeKortit kasi =
     for kortti in kasi do
     kortti
 
+let onkoVentti korttienSumma = 
+    if korttienSumma = ventti then true
+    else  false
+
 let pelaaPelia pelaaja jakaja pakka = 
     let mutable pelaakoPelaaja = nostaakoKortin()
     let mutable pelaaja = pelaaja
     let mutable jakaja = jakaja
-    let mutable loppupakka = pakka
+    let mutable pakka = pakka
+    let mutable pelaakoJakaja = true
     
     while pelaakoPelaaja do
-        let (nostettuKortti, pakka) = jaaKortti pakka
-        let kortti = [nostettuKortti.Value]
-        pelaaja <- {Nimi = "Pelaaja"; Kasi = List.append pelaaja.Kasi kortti}
+        let (nostettuKortti, loppuPakka) = jaaKortti pakka
+        pelaaja <- {Nimi = "Pelaaja"; Kasi = korttiKateen pelaaja.Kasi nostettuKortti.Value}
+        //let korttienSumma = laskeKortit pelaaja.Kasi
         kerroPelaaja pelaaja.Kasi
-        pelaakoPelaaja <- nostaakoKortin()
-
-    let mutable pelaakoJakaja = true
+        pakka <- loppuPakka
+        pelaakoPelaaja <- nostaakoKortin() 
 
     while pelaakoJakaja do
-        let (nostettuKortti, pakka) = jaaKortti pakka
+        let (nostettuKortti, loppuPakka) = jaaKortti pakka
         let kortti = [nostettuKortti.Value]
-        jakaja <- {Nimi = "Jakaja"; Kasi = List.append jakaja.Kasi kortti}
+        jakaja <- {Nimi = "Jakaja"; Kasi = korttiKateen jakaja.Kasi nostettuKortti.Value}
+        //let korttienSumma = laskeKortit jakaja.Kasi
         kerroJakaja jakaja.Kasi
+        pakka <- loppuPakka
     
 
 // Tulosta ja toimita
