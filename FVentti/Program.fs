@@ -23,7 +23,7 @@ type Kortti = // Kortti on discriminated union, union Numero + Maa
 
 let haeKortinNumero kortti =
     match kortti with
-    | Assa(_) -> 1 // tai 14
+    | Assa(_) -> 14 // oletetaan 14 ja vaihdetaan pienemmäksi jos mennään ventin yli
     | Kaksi(_) -> 2
     | Kolme(_) -> 3
     | Nelja(_) -> 4
@@ -36,6 +36,11 @@ let haeKortinNumero kortti =
     | Jatka(_) -> 10
     | Kuningatar(_) -> 10
     | Kuningas(_) -> 10
+
+let onkoAssa kortti = 
+    match kortti with
+    | Assa(_) -> true
+    | _ -> false
 
 type Pelaaja = {
                 Nimi : String;
@@ -80,8 +85,8 @@ let kerroJakaja jakaja korttienSumma =
     printf "%A \n" korttienSumma
     for kortti in jakaja do
     printf "%A \n" kortti
-// Sekoita korttipakka
 
+// Sekoita korttipakka
 let sekoitaPakka pakka =
     let random = new System.Random()
     pakka |> List.sortBy (fun kortti -> random.Next())
@@ -116,7 +121,29 @@ let laskeKortit kasi =
     for kortti in kasi do
         let kortinNumero = haeKortinNumero kortti
         ret <-  add ret kortinNumero
+    done
     ret
+
+// Esimerkki. Poista myöhemmin
+//   if expr then
+//   expr
+//   if expr then
+//      expr
+//   else
+//      expr
+//else
+//   expr
+
+// funktio joka tarkistaa onko kädessä ässä
+let onkoKadessaAssa kasi = 
+    let mutable onko = false
+    for kortti in kasi do
+    onko <- onkoAssa kortti 
+    done
+    onko
+    
+// funktio joka laskee ässän kanssa parhaimman summan
+
 
 let onkoVentti korttienSumma = 
     if korttienSumma = ventti then true
