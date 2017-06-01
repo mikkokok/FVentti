@@ -33,9 +33,9 @@ let haeKortinNumero kortti =
     | Kahdeksan(_) -> 8
     | Yhdeksan(_) -> 9
     | Kymmenen(_) -> 10
-    | Jatka(_) -> 11
-    | Kuningatar(_) -> 12
-    | Kuningas(_) -> 13
+    | Jatka(_) -> 10
+    | Kuningatar(_) -> 10
+    | Kuningas(_) -> 10
 
 type Pelaaja = {
                 Nimi : String;
@@ -111,11 +111,11 @@ let nostaakoKortin () =
     else false
 // Funktio jolla lasketaan kädessä olevien korttien arvot
 let laskeKortit kasi = 
-    printf "Lasketaan korttien summa"
+    //printf "Lasketaan korttien summa"
     let mutable ret = 0
     for kortti in kasi do
-    ret <- ret + haeKortinNumero kortti
-    done
+        let kortinNumero = haeKortinNumero kortti
+        ret <-  add ret kortinNumero
     ret
 
 let onkoVentti korttienSumma = 
@@ -175,8 +175,8 @@ let main() =
     let jakaja = {Nimi = "Jakaja";  Kasi = pelaajanAloitusKortit}
     let pelaaja = {Nimi = "Pelaaja"; Kasi = jakajanAloitusKortit}
 
-    let pelaajanAloitusKadenSumma = laskeKortit pelaajanAloitusKortit
-    let jakajanAloitusKadenSumma = laskeKortit jakajanAloitusKortit
+    let pelaajanAloitusKadenSumma = laskeKortit pelaaja.Kasi
+    let jakajanAloitusKadenSumma = laskeKortit jakaja.Kasi
 
     kerroPelaaja pelaaja.Kasi pelaajanAloitusKadenSumma
     kerroJakaja jakaja.Kasi jakajanAloitusKadenSumma
@@ -204,7 +204,7 @@ let main() =
     //printf "------------------------------------------------ \n"
     //kerroPakka pakka // Lukee pakan
     //printf "------------------------------------------------ \n"
-    kerroPelaaja pelaaja.Kasi
+    //kerroPelaaja pelaaja.Kasi
 
     
     ///jakaja.Kasi = List.append(jaaKortti(pakka))
