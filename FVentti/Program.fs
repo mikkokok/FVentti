@@ -158,17 +158,55 @@ let tarkistaKierroksenHavio korttienSumma =
     if korttienSumma > ventti then true
     else false
 
+let kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo =     
+    if pelaajanKadenArvo = ventti then "Pelaaja voitti pelin"
+    elif jakajanKadenArvo = ventti then "Jakaja voitti pelin"
+    elif pelaajanKadenArvo > ventti then "Jakaja voitti pelin"
+    elif jakajanKadenArvo > ventti then "Pelaaja voitti pelin"
+    elif pelaajanKadenArvo > jakajanKadenArvo then "Pelaaja voitti pelin"
+    else "Jakaja voitti pelin"
+
 let tulostaPelinTulos pelaaja jakaja = 
     printfn "Peli päättyi. Paina mitä tahansa näppäintä lopettaaksesi ohjelman"
+    let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
+    let jakajanKadenArvo = laskeKortit jakaja.Kasi
+    let voitto = kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo
+
+    printfn "%A \n" voitto
+
     let ret = Console.ReadLine()
     ret
 
+
 let pelaaPelia pelaaja jakaja pakka = 
+
+    let pelaajanKadenAloitusArvo = laskeKortit pelaaja.Kasi
+    let jakajanKadenAloitusArvo = laskeKortit jakaja.Kasi
+
+    //Tarkistaa voiton jo alussa hieman keskeneräinen
+//    if pelaajanKadenAloitusArvo = ventti then
+//        let pelaakoPelaaja = false
+//        let pelaakoJakaja = false
+//    elif pelaajanKadenAloitusArvo > ventti then 
+//        let pelaakoPelaaja = false
+//        let pelaakoJakaja = false
+//    else 
+//        if jakajanKadenAloitusArvo = ventti then
+//            let pelaakoPelaaja = false
+//            let pelaakoJakaja = false
+//        elif jakajanKadenAloitusArvo > ventti then
+//            let pelaakoPelaaja = false
+//            let pelaakoJakaja = false
+//        else
+//            let mutable pelaakoPelaaja = nostaakoKortin()
+//            let mutable pelaakoJakaja = true
+    
     let mutable pelaakoPelaaja = nostaakoKortin()
+    let mutable pelaakoJakaja = true
     let mutable pelaaja = pelaaja
     let mutable jakaja = jakaja
     let mutable pakka = pakka
-    let mutable pelaakoJakaja = true
+    let mutable voittikoPelaaja = false
 
     while pelaakoPelaaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
@@ -188,6 +226,8 @@ let pelaaPelia pelaaja jakaja pakka =
             pakka <- loppuPakka
             pelaakoPelaaja <- nostaakoKortin() 
 
+    let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
+
     while pelaakoJakaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
         let kortti = [nostettuKortti.Value]
@@ -197,9 +237,10 @@ let pelaaPelia pelaaja jakaja pakka =
         let onkoHavio = tarkistaKierroksenHavio korttienSumma
         if onkoHavio then
             pelaakoJakaja <- false
+        elif pelaajanKadenArvo <= korttienSumma then
+            pelaakoJakaja <- false
         else
-            pakka <- loppuPakka
-    
+            pakka <- loppuPakka  
 
 // Tulosta ja toimita
 let main() = 
