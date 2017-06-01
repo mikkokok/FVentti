@@ -68,14 +68,16 @@ let kerroPakka pakka =
     printf "%A \n" kortti
 
 // Kerro pelaajan käsi
-let kerroPelaaja kasi = 
+let kerroPelaaja kasi korttienSumma = 
     printf "----------Pelaajan kortit--------------------------- \n"
+    printf "%A \n" korttienSumma
     for kortti in kasi do
-    printf "%A \n" kortti
+    printf "%A \n" kortti 
 
 // Kerro jakajan käsi
-let kerroJakaja jakaja =
+let kerroJakaja jakaja korttienSumma =
     printf "----------Jakajan kortit--------------------------- \n"
+    printf "%A \n" korttienSumma
     for kortti in jakaja do
     printf "%A \n" kortti
 // Sekoita korttipakka
@@ -93,18 +95,10 @@ let jaaKortti pakka =
     | kortti::loppupakka -> (Some kortti, loppupakka)
     | [] -> (None, [])    
 
-//Jakaa kortin ja palauttaa pakan ensimmäisen kortin
-// sekä lopun pakan erikseen
-//let jaaKortti pakka = 
-    //(List.head pakka, List.tail pakka)
-
 // Aseta kortti käteen
 let korttiKateen kortti kasi =
     let ret = kasi :: kortti
     ret
-
-let asetaKorttiKateen pelaaja kortti = 
-    pelaaja.Kasi = List.append pelaaja.Kasi kortti
 
 let add x y =
     x + y
@@ -128,6 +122,12 @@ let onkoVentti korttienSumma =
     if korttienSumma = ventti then true
     else  false
 
+let tarkistaKierroksenVoitto korttienSumma = 
+    let ventti = onkoVentti korttienSumma
+    if ventti then true
+    else false
+
+
 let pelaaPelia pelaaja jakaja pakka = 
     let mutable pelaakoPelaaja = nostaakoKortin()
     let mutable pelaaja = pelaaja
@@ -138,17 +138,21 @@ let pelaaPelia pelaaja jakaja pakka =
     while pelaakoPelaaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
         pelaaja <- {Nimi = "Pelaaja"; Kasi = korttiKateen pelaaja.Kasi nostettuKortti.Value}
-        //let korttienSumma = laskeKortit pelaaja.Kasi
-        kerroPelaaja pelaaja.Kasi
-        pakka <- loppuPakka
-        pelaakoPelaaja <- nostaakoKortin() 
+        let korttienSumma = laskeKortit pelaaja.Kasi
+        kerroPelaaja pelaaja.Kasi korttienSumma
+        let onkoVoitto = tarkistaKierroksenVoitto korttienSumma
+        if onkoVoitto then
+            pelaakoPelaaja <- false
+        else
+            pakka <- loppuPakka
+            pelaakoPelaaja <- nostaakoKortin() 
 
     while pelaakoJakaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
         let kortti = [nostettuKortti.Value]
         jakaja <- {Nimi = "Jakaja"; Kasi = korttiKateen jakaja.Kasi nostettuKortti.Value}
-        //let korttienSumma = laskeKortit jakaja.Kasi
-        kerroJakaja jakaja.Kasi
+        let korttienSumma = laskeKortit jakaja.Kasi
+        kerroJakaja jakaja.Kasi korttienSumma
         pakka <- loppuPakka
     
 
@@ -171,8 +175,11 @@ let main() =
     let jakaja = {Nimi = "Jakaja";  Kasi = pelaajanAloitusKortit}
     let pelaaja = {Nimi = "Pelaaja"; Kasi = jakajanAloitusKortit}
 
-    kerroPelaaja pelaaja.Kasi
-    kerroJakaja jakaja.Kasi
+    let pelaajanAloitusKadenSumma = laskeKortit pelaajanAloitusKortit
+    let jakajanAloitusKadenSumma = laskeKortit jakajanAloitusKortit
+
+    kerroPelaaja pelaaja.Kasi pelaajanAloitusKadenSumma
+    kerroJakaja jakaja.Kasi jakajanAloitusKadenSumma
 
     pelaaPelia pelaaja jakaja pakka
 
