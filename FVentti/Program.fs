@@ -23,7 +23,7 @@ type Kortti = // Kortti on discriminated union, union Numero + Maa
 
 let haeKortinNumero kortti =
     match kortti with
-    | Assa(_) -> 14 // oletetaan 14 ja vaihdetaan pienemmäksi jos mennään ventin yli
+    | Assa(_) -> 11 // oletetaan 11 ja vaihdetaan pienemmäksi jos mennään ventin yli
     | Kaksi(_) -> 2
     | Kolme(_) -> 3
     | Nelja(_) -> 4
