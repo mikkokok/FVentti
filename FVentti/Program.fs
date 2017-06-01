@@ -123,6 +123,7 @@ let laskeKortit kasi =
     printf "Lasketaan korttien summa"
     for kortti in kasi do
     kortti
+    
 
 // Tulosta ja toimita
 let main() = 
@@ -144,15 +145,17 @@ let main() =
     let mutable pelaaja = {Nimi = "Pelaaja"; Kasi = jakajanAloitusKortit}
 
     kerroPelaaja pelaaja.Kasi
-    kerroPelaaja jakaja.Kasi
+    kerroJakaja jakaja.Kasi
 
     let mutable pelaakoPelaaja = nostaakoKortin()
+    let mutable loppuPakkafinal = loppuPakka4
 
     while pelaakoPelaaja do
-        let (nostettuKortti, loppuPakka5) = jaaKortti loppuPakka4
+        let (nostettuKortti, loppuPakkaP) = jaaKortti loppuPakkafinal
         let lista = [nostettuKortti]
-        let paivitettyPelaaja = {Nimi = "Pelaaja"; Kasi = List.append pelaaja.Kasi lista}
-        kerroPelaaja paivitettyPelaaja.Kasi
+        pelaaja <- {Nimi = "Pelaaja"; Kasi = List.append pelaaja.Kasi lista}
+        kerroPelaaja pelaaja.Kasi
+        loppuPakkafinal <- loppuPakkaP
         pelaakoPelaaja <- nostaakoKortin()
 
     // Testausta varten
