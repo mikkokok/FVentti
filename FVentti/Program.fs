@@ -127,6 +127,14 @@ let tarkistaKierroksenVoitto korttienSumma =
     if ventti then true
     else false
 
+let tarkistaKierroksenHavio korttienSumma =
+    if korttienSumma > ventti then true
+    else false
+
+let tulostaPelinTulos pelaaja jakaja = 
+    printfn "Peli päättyi. Paina mitä tahansa näppäintä lopettaaksesi ohjelman"
+    let ret = Console.ReadLine()
+    ret
 
 let pelaaPelia pelaaja jakaja pakka = 
     let mutable pelaakoPelaaja = nostaakoKortin()
@@ -140,6 +148,10 @@ let pelaaPelia pelaaja jakaja pakka =
         pelaaja <- {Nimi = "Pelaaja"; Kasi = korttiKateen pelaaja.Kasi nostettuKortti.Value}
         let korttienSumma = laskeKortit pelaaja.Kasi
         kerroPelaaja pelaaja.Kasi korttienSumma
+        let onkoHavio = tarkistaKierroksenHavio korttienSumma
+        if onkoHavio then
+            pelaakoPelaaja <-false
+        else
         let onkoVoitto = tarkistaKierroksenVoitto korttienSumma
         if onkoVoitto then
             pelaakoPelaaja <- false
@@ -153,7 +165,11 @@ let pelaaPelia pelaaja jakaja pakka =
         jakaja <- {Nimi = "Jakaja"; Kasi = korttiKateen jakaja.Kasi nostettuKortti.Value}
         let korttienSumma = laskeKortit jakaja.Kasi
         kerroJakaja jakaja.Kasi korttienSumma
-        pakka <- loppuPakka
+        let onkoHavio = tarkistaKierroksenHavio korttienSumma
+        if onkoHavio then
+            pelaakoJakaja <- false
+        else
+            pakka <- loppuPakka
     
 
 // Tulosta ja toimita
@@ -182,6 +198,8 @@ let main() =
     kerroJakaja jakaja.Kasi jakajanAloitusKadenSumma
 
     pelaaPelia pelaaja jakaja pakka
+    tulostaPelinTulos pelaaja jakaja
+
 
     // Testausta varten
     //printf "\n\n %A \n\n" pelaajanAloitusKortit.Length 
