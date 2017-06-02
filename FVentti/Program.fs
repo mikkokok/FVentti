@@ -174,13 +174,12 @@ let kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo =
     else "Jakaja voitti pelin"
 
 let tulostaPelinTulos pelaaja jakaja = 
-    printfn "Peli päättyi. Paina mitä tahansa näppäintä lopettaaksesi ohjelman"
     let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
     let jakajanKadenArvo = laskeKortit jakaja.Kasi
     let voitto = kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo
-
+    printfn ""
     printfn "%A \n" voitto
-
+    printfn "Peli päättyi. Paina mitä tahansa näppäintä lopettaaksesi ohjelman"
     let ret = Console.ReadLine()
     ret
 
@@ -216,6 +215,9 @@ let pelaaPelia pelaaja jakaja pakka =
             pelaakoPelaaja <- nostaakoKortin() 
 
     let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
+    let jakajanKadenArvo = laskeKortit jakaja.Kasi
+
+    if jakajanKadenArvo > pelaajanKadenArvo then pelaakoJakaja <- false
 
     while pelaakoJakaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
