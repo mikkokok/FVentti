@@ -158,6 +158,13 @@ let tarkistaKierroksenHavio korttienSumma =
     if korttienSumma > ventti then true
     else false
 
+let tarkistaAloitusKadet pelaajanKorttienArvo jakajanKorttienArvo = 
+    if pelaajanKorttienArvo = ventti then true
+    elif jakajanKorttienArvo = ventti then true
+    elif pelaajanKorttienArvo > ventti then true
+    elif jakajanKorttienArvo > ventti then true
+    else false
+
 let kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo =     
     if pelaajanKadenArvo = ventti then "Pelaaja voitti pelin"
     elif jakajanKadenArvo = ventti then "Jakaja voitti pelin"
@@ -182,24 +189,6 @@ let pelaaPelia pelaaja jakaja pakka =
 
     let pelaajanKadenAloitusArvo = laskeKortit pelaaja.Kasi
     let jakajanKadenAloitusArvo = laskeKortit jakaja.Kasi
-
-    //Tarkistaa voiton jo alussa hieman keskeneräinen
-//    if pelaajanKadenAloitusArvo = ventti then
-//        let pelaakoPelaaja = false
-//        let pelaakoJakaja = false
-//    elif pelaajanKadenAloitusArvo > ventti then 
-//        let pelaakoPelaaja = false
-//        let pelaakoJakaja = false
-//    else 
-//        if jakajanKadenAloitusArvo = ventti then
-//            let pelaakoPelaaja = false
-//            let pelaakoJakaja = false
-//        elif jakajanKadenAloitusArvo > ventti then
-//            let pelaakoPelaaja = false
-//            let pelaakoJakaja = false
-//        else
-//            let mutable pelaakoPelaaja = nostaakoKortin()
-//            let mutable pelaakoJakaja = true
     
     let mutable pelaakoPelaaja = nostaakoKortin()
     let mutable pelaakoJakaja = true
@@ -240,7 +229,9 @@ let pelaaPelia pelaaja jakaja pakka =
         elif pelaajanKadenArvo <= korttienSumma then
             pelaakoJakaja <- false
         else
-            pakka <- loppuPakka  
+            pakka <- loppuPakka 
+            
+    tulostaPelinTulos pelaaja jakaja 
 
 // Tulosta ja toimita
 let main() = 
@@ -267,9 +258,11 @@ let main() =
     kerroPelaaja pelaaja.Kasi pelaajanAloitusKadenSumma
     kerroJakaja jakaja.Kasi jakajanAloitusKadenSumma
 
-    pelaaPelia pelaaja jakaja pakka
-    tulostaPelinTulos pelaaja jakaja
+    let paattyikoPeliAloitukseen = tarkistaAloitusKadet pelaajanAloitusKadenSumma jakajanAloitusKadenSumma
 
+    match paattyikoPeliAloitukseen with
+        | true -> tulostaPelinTulos pelaaja jakaja
+        | false -> pelaaPelia pelaaja jakaja pakka
 
     // Testausta varten
     //printf "\n\n %A \n\n" pelaajanAloitusKortit.Length 
