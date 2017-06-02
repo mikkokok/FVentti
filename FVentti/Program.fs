@@ -217,7 +217,7 @@ let pelaaPelia pelaaja jakaja pakka =
     let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
     let jakajanKadenArvo = laskeKortit jakaja.Kasi
 
-    if jakajanKadenArvo > pelaajanKadenArvo then pelaakoJakaja <- false
+    if jakajanKadenArvo >= jakajansuurinkasi then pelaakoJakaja <-false
 
     while pelaakoJakaja do
         let (nostettuKortti, loppuPakka) = jaaKortti pakka
@@ -228,7 +228,7 @@ let pelaaPelia pelaaja jakaja pakka =
         let onkoHavio = tarkistaKierroksenHavio korttienSumma
         if onkoHavio then
             pelaakoJakaja <- false
-        elif pelaajanKadenArvo <= korttienSumma then
+        elif korttienSumma >= jakajansuurinkasi then
             pelaakoJakaja <- false
         else
             pakka <- loppuPakka 
