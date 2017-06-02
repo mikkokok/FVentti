@@ -90,9 +90,7 @@ let kerroJakaja jakaja korttienSumma =
 let sekoitaPakka pakka =
     let random = new System.Random()
     pakka |> List.sortBy (fun kortti -> random.Next())
-
-
-// Jaa kortti jakajalle ja pelaajalle eli aloita peli
+    
 // Palauttaa tuplen (kortti option, pakka)
 // Jos pakka on tyhjä palauttaa optionin ja tyhjän pakan
 let jaaKortti pakka = 
@@ -105,46 +103,43 @@ let korttiKateen kortti kasi =
     let ret = kasi :: kortti
     ret
 
-let add x y =
-    x + y
-
 // Funktio jolla kysytään pelaako pelaaja vielä
 let nostaakoKortin () =
-    printf "Nostatko kortin? Vastaa k tai e"
+    printf "Nostatko kortin? Vastaa k tai e "
     let ret = Console.ReadLine()
     if ret = "k" then true
     else false
-// Funktio jolla lasketaan kädessä olevien korttien arvot
-let laskeKortit kasi = 
-    //printf "Lasketaan korttien summa"
-    let mutable ret = 0
-    for kortti in kasi do
-        let kortinNumero = haeKortinNumero kortti
-        ret <-  add ret kortinNumero
-    done
-    ret
-
-// Esimerkki. Poista myöhemmin
-//   if expr then
-//   expr
-//   if expr then
-//      expr
-//   else
-//      expr
-//else
-//   expr
 
 // funktio joka tarkistaa onko kädessä ässä
 let onkoKadessaAssa kasi = 
     let mutable onko = false
     for kortti in kasi do
-    onko <- onkoAssa kortti 
+    if onkoAssa kortti = true then
+        onko <- onkoAssa kortti 
     done
     onko
-    
+
 // funktio joka laskee ässän kanssa parhaimman summan
-
-
+let AssaTarkistus kasi summa = 
+    let onko = onkoKadessaAssa kasi
+    let mutable ret = summa - 10
+    match onko with
+    | true -> ret
+    | false -> summa
+        
+// Funktio jolla lasketaan kädessä olevien korttien arvot
+let laskeKortit kasi = 
+    let mutable ret = 0
+    for kortti in kasi do
+        let kortinNumero = haeKortinNumero kortti
+        ret <-  ret + kortinNumero
+    done
+    let retb = AssaTarkistus kasi ret
+    if ventti < ret then
+        retb
+    else 
+    ret
+    
 let onkoVentti korttienSumma = 
     if korttienSumma = ventti then true
     else  false
@@ -177,6 +172,10 @@ let tulostaPelinTulos pelaaja jakaja =
     let pelaajanKadenArvo = laskeKortit pelaaja.Kasi
     let jakajanKadenArvo = laskeKortit jakaja.Kasi
     let voitto = kerroKumpiVoitti pelaajanKadenArvo jakajanKadenArvo
+    printfn ""
+    printfn "Pelaajien kortit:"
+    kerroPelaaja pelaaja.Kasi pelaajanKadenArvo
+    kerroJakaja jakaja.Kasi jakajanKadenArvo
     printfn ""
     printfn "%A \n" voitto
     printfn "Peli päättyi. Paina mitä tahansa näppäintä lopettaaksesi ohjelman"
@@ -266,33 +265,4 @@ let main() =
         | true -> tulostaPelinTulos pelaaja jakaja
         | false -> pelaaPelia pelaaja jakaja pakka
 
-    // Testausta varten
-    //printf "\n\n %A \n\n" pelaajanAloitusKortit.Length 
-    //let lista = List.append pelaaja.Kasi pelaajanKortit
-    //pelaaja.Kasi = List.append pelaaja.Kasi pelaajanKortit
-
-    //let pelaajankasi = {pelaaja with Kasi = lista}
-    //pelaaja.Kasi = korttiKateen pelaaja.Kasi kortti
-    //let testi = pelaajanEkaKortti :: pelaaja.Kasi
-    //printf "\n\n %A \n\n" pelaajankasi.Kasi.Length 
-    //let numero = haeKortinNumero pelaajanEkaKortti.Value
-    //printf "\n\n %A \n\n" numero
-
-
-    //printf "%A \n" kortti.Value
-    //printf "%A \n" korttia.Value
-    //printf "%A \n" korttib.Value
-    //printf "%A \n" korttic
-    //printf "%A \n" korttid
-    //printf "------------------------------------------------ \n"
-    //kerroPakka pakka // Lukee pakan
-    //printf "------------------------------------------------ \n"
-    //kerroPelaaja pelaaja.Kasi
-
-    
-    ///jakaja.Kasi = List.append(jaaKortti(pakka))
-    ///jakaja.Kasi = List.append(jaaKortti(pakka))
-    ///pelaaja.Kasi = List.append(jaaKortti(pakka))
-    ///pelaaja.Kasi = List.append(jaaKortti(pakka))
-    ///Console.WriteLine(korttipakka);
 main()
